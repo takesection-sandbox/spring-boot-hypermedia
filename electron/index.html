@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <title>spring-boot-hypermedia</title>
+        <script>
+            window.onload = () => {
+                const http = require('http');
+                const elem = window.document.getElementById('video');
+
+                http.get('http://localhost:8080/list', res => {
+                    res.setEncoding('UTF-8');
+                    res.on('data', data => {
+                        const list = JSON.parse(data);
+                        const links = list[0]['_links'];
+                        const url = links['download']['href'];
+                        elem.src = url;
+                    });
+                }).on('error', e => {
+                    console.log(e);
+                });
+            };
+        </script>
+    </head>
+    <body style="background: black;">
+        <video id="video" autoplay="autoplay" style="width: 100%; height: 100%;"/>
+    </body>
+</html>
